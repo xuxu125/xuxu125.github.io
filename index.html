@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的个人博客 | 记录生活与技术</title>
+    <!-- 引入Tailwind CSS用于快速样式开发 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- 自定义Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb', // 主色调：蓝色
+                        secondary: '#475569', // 次要色调：深灰色
+                        accent: '#f97316', // 强调色：橙色
+                        light: '#f8fafc', // 浅色背景
+                        dark: '#1e293b' // 深色文本
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- 自定义工具类 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .blog-card-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+            .btn-primary {
+                @apply bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors;
+            }
+            .btn-outline {
+                @apply border border-primary text-primary px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-dark font-sans">
+    <!-- 导航栏 -->
+    <header class="sticky top-0 z-50 bg-white shadow-sm">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <!-- 博客标题/Logo -->
+            <a href="#" class="text-2xl font-bold text-primary flex items-center">
+                <i class="fas fa-feather-alt mr-2"></i>
+                子悦博客
+            </a>
+            
+            <!-- 桌面端导航菜单 -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#" class="font-medium hover:text-primary transition-colors">首页</a>
+                <a href="#articles" class="font-medium hover:text-primary transition-colors">文章</a>
+                <a href="#categories" class="font-medium hover:text-primary transition-colors">分类</a>
+                <a href="#about" class="font-medium hover:text-primary transition-colors">关于我</a>
+                <a href="#contact" class="font-medium hover:text-primary transition-colors">联系我</a>
+            </div>
+            
+            <!-- 移动端菜单按钮 -->
+            <button id="menuBtn" class="md:hidden text-dark text-xl">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+        
+        <!-- 移动端导航菜单 -->
+        <div id="mobileMenu" class="md:hidden hidden bg-white border-t">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="#" class="py-2 font-medium hover:text-primary transition-colors">首页</a>
+                <a href="#articles" class="py-2 font-medium hover:text-primary transition-colors">文章</a>
+                <a href="#categories" class="py-2 font-medium hover:text-primary transition-colors">分类</a>
+                <a href="#about" class="py-2 font-medium hover:text-primary transition-colors">关于我</a>
+                <a href="#contact" class="py-2 font-medium hover:text-primary transition-colors">联系我</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 英雄区 -->
+    <section class="bg-gradient-to-r from-primary/90 to-primary text-white py-16 md:py-24">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6">探索技术与生活的边界</h1>
+                <p class="text-xl md:text-2xl mb-8 opacity-90">分享编程经验、生活感悟和成长故事</p>
+                <a href="#articles" class="btn-primary inline-block">
+                    阅读文章 <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 主要内容区 -->
+    <main class="container mx-auto px-4 py-12">
+        <!-- 博客文章列表 -->
+        <section id="articles" class="mb-16">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold">最新文章</h2>
+                <a href="#" class="text-primary hover:underline flex items-center">
+                    查看全部 <i class="fas fa-angle-right ml-1"></i>
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 文章卡片1 -->
+                <article class="bg-white rounded-xl shadow-md overflow-hidden blog-card-hover">
+                    <img src="https://picsum.photos/seed/blog1/600/400" alt="Python入门教程" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span class="flex items-center"><i class="fas fa-calendar-alt mr-1"></i> 2026-01-01</span>
+                            <span class="mx-2">•</span>
+                            <span class="flex items-center"><i class="fas fa-folder-open mr-1"></i> 编程基础</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">
+                            <a href="#" class="hover:text-primary transition-colors" onclick="openArticleModal(1)">Python入门到精通：零基础也能学会</a>
+                        </h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3">
+                            本文将带你从Python的基础语法开始，一步步掌握变量、数据类型、循环、函数等核心概念，适合完全零基础的编程新手。
+                        </p>
+                        <a href="#" class="text-primary font-medium hover:underline flex items-center" onclick="openArticleModal(1)">
+                            阅读更多 <i class="fas fa-long-arrow-alt-right ml-1"></i>
+                        </a>
+                    </div>
+                </article>
+                
+                <!-- 文章卡片2 -->
+                <article class="bg-white rounded-xl shadow-md overflow-hidden blog-card-hover">
+                    <img src="https://picsum.photos/seed/blog2/600/400" alt="前端开发技巧" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span class="flex items-center"><i class="fas fa-calendar-alt mr-1"></i> 2026-01-03</span>
+                            <span class="mx-2">•</span>
+                            <span class="flex items-center"><i class="fas fa-folder-open mr-1"></i> 前端开发</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">
+                            <a href="#" class="hover:text-primary transition-colors" onclick="openArticleModal(2)">10个提升开发效率的CSS技巧</a>
+                        </h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3">
+                            掌握这些CSS技巧，能让你的样式代码更简洁、更高效，减少冗余代码，提升页面性能和开发效率。包括Flex布局、Grid布局、自定义属性等。
+                        </p>
+                        <a href="#" class="text-primary font-medium hover:underline flex items-center" onclick="openArticleModal(2)">
+                            阅读更多 <i class="fas fa-long-arrow-alt-right ml-1"></i>
+                        </a>
+                    </div>
+                </article>
+                
+                <!-- 文章卡片3 -->
+                <article class="bg-white rounded-xl shadow-md overflow-hidden blog-card-hover">
+                    <img src="https://picsum.photos/seed/blog3/600/400" alt="程序员成长" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span class="flex items-center"><i class="fas fa-calendar-alt mr-1"></i> 2026-01-05</span>
+                            <span class="mx-2">•</span>
+                            <span class="flex items-center"><i class="fas fa-folder-open mr-1"></i> 职业成长</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">
+                            <a href="#" class="hover:text-primary transition-colors" onclick="openArticleModal(3)">程序员如何高效学习新技能</a>
+                        </h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3">
+                            技术更新迭代快，作为程序员需要持续学习。本文分享6个高效学习方法，帮助你快速掌握新技能，避免无效学习和时间浪费。
+                        </p>
+                        <a href="#" class="text-primary font-medium hover:underline flex items-center" onclick="openArticleModal(3)">
+                            阅读更多 <i class="fas fa-long-arrow-alt-right ml-1"></i>
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </section>
+        
+        <!-- 分类区域 -->
+        <section id="categories" class="mb-16">
+            <h2 class="text-3xl font-bold mb-8">文章分类</h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <a href="#" class="bg-white rounded-lg shadow p-6 text-center blog-card-hover">
+                    <div class="text-3xl text-primary mb-3"><i class="fas fa-code"></i></div>
+                    <h3 class="font-bold text-lg">编程基础</h3>
+                    <p class="text-gray-500 mt-1">12篇文章</p>
+                </a>
+                
+                <a href="#" class="bg-white rounded-lg shadow p-6 text-center blog-card-hover">
+                    <div class="text-3xl text-primary mb-3"><i class="fas fa-laptop-code"></i></div>
+                    <h3 class="font-bold text-lg">前端开发</h3>
+                    <p class="text-gray-500 mt-1">18篇文章</p>
+                </a>
+                
+                <a href="#" class="bg-white rounded-lg shadow p-6 text-center blog-card-hover">
+                    <div class="text-3xl text-primary mb-3"><i class="fas fa-server"></i></div>
+                    <h3 class="font-bold text-lg">后端开发</h3>
+                    <p class="text-gray-500 mt-1">15篇文章</p>
+                </a>
+                
+                <a href="#" class="bg-white rounded-lg shadow p-6 text-center blog-card-hover">
+                    <div class="text-3xl text-primary mb-3"><i class="fas fa-user-tie"></i></div>
+                    <h3 class="font-bold text-lg">职业成长</h3>
+                    <p class="text-gray-500 mt-1">9篇文章</p>
+                </a>
+            </div>
+        </section>
+        
+        <!-- 关于博主 -->
+        <section id="about" class="mb-16 bg-white rounded-xl shadow-md p-8">
+            <div class="flex flex-col md:flex-row items-center gap-8">
+                <div class="w-40 h-40 rounded-full overflow-hidden border-4 border-primary/20">
+                    <img src="https://picsum.photos/seed/avatar/200/200" alt="博主头像" class="w-full h-full object-cover">
+                </div>
+                
+                <div>
+                    <h2 class="text-3xl font-bold mb-4">关于我</h2>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        大家好！我是一名资深程序员，拥有8年的软件开发经验，擅长Python、JavaScript、React、Vue等技术栈。
+                        我热爱分享技术知识和编程经验，希望通过这个博客帮助更多的编程爱好者入门和成长。
+                    </p>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        除了编程，我还喜欢阅读、旅行和摄影。这个博客不仅记录我的技术成长，也分享我的生活感悟。
+                        如果你有任何问题或想交流技术，欢迎随时联系我！
+                    </p>
+                    
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-xl text-gray-500 hover:text-primary transition-colors"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-xl text-gray-500 hover:text-primary transition-colors"><i class="fab fa-weixin"></i></a>
+                        <a href="#" class="text-xl text-gray-500 hover:text-primary transition-colors"><i class="fab fa-weibo"></i></a>
+                        <a href="#" class="text-xl text-gray-500 hover:text-primary transition-colors"><i class="fab fa-zhihu"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 联系我 -->
+        <section id="contact" class="bg-white rounded-xl shadow-md p-8">
+            <h2 class="text-3xl font-bold mb-6">联系我</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <form id="contactForm">
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 mb-2">姓名</label>
+                            <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="请输入你的姓名">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-700 mb-2">邮箱</label>
+                            <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="请输入你的邮箱">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="message" class="block text-gray-700 mb-2">留言内容</label>
+                            <textarea id="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="请输入你想对我说的话"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary w-full">
+                            发送留言 <i class="fas fa-paper-plane ml-2"></i>
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="flex flex-col justify-center">
+                    <div class="mb-6">
+                        <h3 class="text-xl font-bold mb-3 flex items-center">
+                            <i class="fas fa-envelope text-primary mr-3"></i> 邮箱
+                        </h3>
+                        <p class="text-gray-600">2986540645@qq.com</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-xl font-bold mb-3 flex items-center">
+                            <i class="fas fa-map-marker-alt text-primary mr-3"></i> 地址
+                        </h3>
+                        <p class="text-gray-600">河北省河间市瀛洲镇南关村</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-bold mb-3 flex items-center">
+                            <i class="fas fa-phone text-primary mr-3"></i> 电话
+                        </h3>
+                        <p class="text-gray-600">155 1275 2225</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 文章详情弹窗 -->
+    <div id="articleModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b">
+                <div class="flex justify-between items-center">
+                    <h2 id="modalTitle" class="text-2xl font-bold">文章标题</h2>
+                    <button id="closeModal" class="text-gray-500 hover:text-dark text-xl">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="p-6">
+                <div id="modalContent" class="prose max-w-none">
+                    <!-- 文章内容会通过JS动态填充 -->
+                </div>
+            </div>
+            
+            <div class="p-6 border-t">
+                <button id="closeModalBtn" class="btn-outline">
+                    关闭 <i class="fas fa-times ml-1"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-feather-alt mr-2"></i>
+                        悦博客
+                    </h3>
+                    <p class="text-gray-400 mb-4">
+                        分享技术，记录生活，一起成长
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-weixin"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-weibo"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-zhihu"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">快速链接</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">首页</a></li>
+                        <li><a href="#articles" class="text-gray-400 hover:text-white transition-colors">文章</a></li>
+                        <li><a href="#categories" class="text-gray-400 hover:text-white transition-colors">分类</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition-colors">关于我</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition-colors">联系我</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">订阅更新</h3>
+                    <p class="text-gray-400 mb-4">
+                        输入邮箱，获取最新文章推送
+                    </p>
+                    <div class="flex">
+                        <input type="email" placeholder="你的邮箱地址" class="px-4 py-2 rounded-l-lg w-full focus:outline-none text-dark">
+                        <button class="bg-primary hover:bg-primary/90 transition-colors px-4 py-2 rounded-r-lg">
+                            订阅
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8 text-center text-gray-400">
+                <p>© 2026 悦博客. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 移动端菜单切换
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            // 切换菜单图标
+            const icon = menuBtn.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.replace('fa-bars', 'fa-times');
+            } else {
+                icon.classList.replace('fa-times', 'fa-bars');
+            }
+        });
+        
+        // 文章数据
+        const articles = [
+            {
+                id: 1,
+                title: 'Python入门到精通：零基础也能学会',
+                content: `
+                    <h3 class="text-xl font-bold mb-3">Python简介</h3>
+                    <p class="mb-4">Python是一种解释型、高级编程语言，以其简洁易读的语法和强大的生态系统著称。它广泛应用于Web开发、数据分析、人工智能、自动化等领域。</p>
+                    
+                    <h3 class="text-xl font-bold mb-3">环境搭建</h3>
+                    <p class="mb-4">首先需要安装Python解释器，可以从<a href="https://www.python.org/" class="text-primary hover:underline">Python官网</a>下载对应版本。推荐使用Python 3.8及以上版本。</p>
+                    
+                    <h3 class="text-xl font-bold mb-3">基础语法</h3>
+                    <h4 class="text-lg font-semibold mb-2">1. 变量和数据类型</h4>
+                    <pre class="bg-gray-100 p-4 rounded-lg mb-4 overflow-x-auto"><code># 定义变量
+name = "张三"
+age = 25
+height = 1.75
+is_student = True
+
+# 打印变量
+print(f"姓名：{name}，年龄：{age}")</code></pre>
+                    
+                    <h4 class="text-lg font-semibold mb-2">2. 条件语句</h4>
+                    <pre class="bg-gray-100 p-4 rounded-lg mb-4 overflow-x-auto"><code>if age >= 18:
+    print("成年人")
+elif age >= 13:
+    print("青少年")
+else:
+    print("儿童")</code></pre>
+                    
+                    <h4 class="text-lg font-semibold mb-2">3. 循环语句</h4>
+                    <pre class="bg-gray-100 p-4 rounded-lg mb-4 overflow-x-auto"><code># for循环
+for i in range(1, 6):
+    print(i)
+
+# while循环
+count = 0
+while count < 5:
+    print(count)
+    count += 1</code></pre>
+                    
+                    <h3 class="text-xl font-bold mb-3">总结</h3>
+                    <p>Python的入门门槛较低，掌握基础语法后可以开始尝试编写简单的程序，逐步深入学习函数、类、模块等高级特性。</p>
+                `
+            },
+            {
+                id: 2,
+                title: '10个提升开发效率的CSS技巧',
+                content: `
+                    <h3 class="text-xl font-bold mb-3">前言</h3>
+                    <p class="mb-4">CSS是前端开发的核心技术之一，掌握一些实用的技巧可以大幅提升开发效率和代码质量。</p>
+                    
+                    <h3 class="text-xl font-bold mb-3">1. 使用CSS变量</h3>
+                    <pre class="bg-gray-100 p-4 rounded-lg mb-4 overflow-x-auto"><code>:root {
+  --primary-color: #2563eb;
+  --text-color: #1e293b;
+}
+
+.button {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}</code></pre>
+                    
+                    <h3 class="text-xl font-bold mb-3">2. Flex布局居中</h3>
+                    <pre class="bg-gray-100 p-4 rounded-lg mb-4 overflow-x-auto"><code>.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}</code></pre>
+                    
+                    <h3 class="text-xl font-bold mb-3">3. Grid布局实现复杂布局</h3>
+                    <pre class="bg-gray-100 p-4 rounded-lg mb-4 overflow-x-auto"><code>.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}</code></pre>
+                    
+                    <h3 class="text-xl font-bold mb-3">4. 使用clamp()实现响应式字体</h3>
+                    <pre class="bg-gray-100 p-4 rounded-lg mb-4 overflow-x-auto"><code>h1 {
+  font-size: clamp(1.5rem, 3vw, 3rem);
+}</code></pre>
+                    
+                    <h3 class="text-xl font-bold mb-3">5. 自定义滚动条</h3>
+                    <pre class="bg-gray-100 p-4 rounded-lg mb-4 overflow-x-auto"><code>::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}</code></pre>
+                    
+                    <p class="mt-4">以上只是5个常用技巧，还有CSS过渡、变换、伪元素等技巧都能帮助你写出更优雅的样式代码。</p>
+                `
+            },
+            {
+                id: 3,
+                title: '程序员如何高效学习新技能',
+                content: `
+                    <h3 class="text-xl font-bold mb-3">为什么学习效率很重要？</h3>
+                    <p class="mb-4">技术更新换代快，程序员需要持续学习才能保持竞争力。但时间有限，高效的学习方法能让你事半功倍。</p>
+                    
+                    <h3 class="text-xl font-bold mb-3">高效学习的6个方法</h3>
+                    
+                    <h4 class="text-lg font-semibold mb-2">1. 明确学习目标</h4>
+                    <p class="mb-4">不要盲目学习，先明确你要解决什么问题，达到什么水平。比如："3个月内掌握React框架，能独立开发中小型项目"。</p>
+                    
+                    <h4 class="text-lg font-semibold mb-2">2. 项目驱动学习</h4>
+                    <p class="mb-4">最好的学习方式是边学边做。找一个实际的小项目，在实践中学习和应用新知识，比单纯看书效果好得多。</p>
+                    
+                    <h4 class="text-lg font-semibold mb-2">3. 分解学习内容</h4>
+                    <p class="mb-4">把大的学习目标分解成小的、可执行的任务。比如学习Vue，可以分解为：基础语法 → 组件 → 路由 → 状态管理 → 实战项目。</p>
+                    
+                    <h4 class="text-lg font-semibold mb-2">4. 定期回顾和总结</h4>
+                    <p class="mb-4">学习新知识后，定期回顾总结，形成自己的知识体系。可以写博客、做笔记，或者给别人讲解，加深理解。</p>
+                    
+                    <h4 class="text-lg font-semibold mb-2">5. 加入学习社区</h4>
+                    <p class="mb-4">加入相关的技术社区，和同行交流，遇到问题及时请教。社区的氛围也能激励你坚持学习。</p>
+                    
+                    <h4 class="text-lg font-semibold mb-2">6. 保持持续学习的习惯</h4>
+                    <p class="mb-4">每天抽出固定的时间学习，哪怕只有30分钟。坚持比单次长时间学习更重要，形成习惯后学习会变得轻松。</p>
+                    
+                    <h3 class="text-xl font-bold mb-3">避免的误区</h3>
+                    <ul class="list-disc pl-6 mb-4 space-y-2">
+                        <li>不要贪多求全，一次学习太多内容容易遗忘</li>
+                        <li>不要只看不练，编程是实践性很强的技能</li>
+                        <li>不要害怕犯错，错误是最好的学习机会</li>
+                    </ul>
+                    
+                    <p>记住，学习是一个长期的过程，保持耐心和持续的努力，你会看到自己的进步。</p>
+                `
+            }
+        ];
+        
+        // 打开文章详情弹窗
+        function openArticleModal(id) {
+            event.preventDefault(); // 阻止默认链接行为
+            
+            const modal = document.getElementById('articleModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            
+            // 找到对应的文章
+            const article = articles.find(item => item.id === id);
+            
+            // 填充内容
+            modalTitle.textContent = article.title;
+            modalContent.innerHTML = article.content;
+            
+            // 显示弹窗
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // 禁止背景滚动
+        }
+        
+        // 关闭文章详情弹窗
+        function closeArticleModal() {
+            const modal = document.getElementById('articleModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = ''; // 恢复背景滚动
+        }
+        
+        // 绑定关闭按钮事件
+        document.getElementById('closeModal').addEventListener('click', closeArticleModal);
+        document.getElementById('closeModalBtn').addEventListener('click', closeArticleModal);
+        
+        // 点击弹窗外部关闭
+        document.getElementById('articleModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('articleModal')) {
+                closeArticleModal();
+            }
+        });
+        
+        // 表单提交处理
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // 获取表单数据
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            // 简单验证
+            if (!name || !email || !message) {
+                alert('请填写完整的留言信息！');
+                return;
+            }
+            
+            // 模拟提交成功
+            alert('留言发送成功！我会尽快回复你。');
+            document.getElementById('contactForm').reset();
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    
+                    // 如果是移动端，点击后关闭菜单
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                        const icon = menuBtn.querySelector('i');
+                        icon.classList.replace('fa-times', 'fa-bars');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
